@@ -2,8 +2,10 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.DTO.LoginRequest;
 import com.example.ecommerce.DTO.SignUpRequest;
+import com.example.ecommerce.DTO.LoginResponse;
 import com.example.ecommerce.entity.User;
 import com.example.ecommerce.service.UserService;
+import com.example.ecommerce.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
     // Sign up endpoint
     @PostMapping("/signup")
@@ -56,15 +59,13 @@ public class UserController {
 
     // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         User user = userService.loginUser(loginRequest);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Login successful");
-        response.put("userId", user.getUserId());
-        response.put("email", user.getEmail());
-        response.put("firstName", user.getFirstName());
-        response.put("lastName", user.getLastName());
+        // Generate JWT
+        String token = jwtService.generateToken(user.getEmail());
+
+        LoginResponse response = new LoginResponse("Login successful", token);
 
         return ResponseEntity.ok(response);
     }
