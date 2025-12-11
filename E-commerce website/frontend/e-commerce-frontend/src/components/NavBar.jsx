@@ -2,8 +2,15 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function NavBar() {
   const location = useLocation();
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   const userJson = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   const user = userJson ? JSON.parse(userJson) : null;
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/';
+  };
 
   return (
     <nav className="navbar navbar-expand-lg shadow-sm" style={{ background: "#0f172a" }}>
@@ -55,19 +62,15 @@ export default function NavBar() {
               placeholder="Search..."
             />
 
-            {user ? (
+            {token && user ? (
               <>
-                <Link to="/profile" className="btn btn-outline-light btn-sm">Profile</Link>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => { localStorage.removeItem("user"); window.location.href = "/" }}
-                >
-                  Logout
-                </button>
+                <Link to="/dashboard" className="btn btn-sm btn-info text-white me-2">Dashboard</Link>
+                <Link to="/profile" className="btn btn-outline-light btn-sm me-2">Profile</Link>
+                <button className="btn btn-danger btn-sm" onClick={handleLogout}>Logout</button>
               </>
             ) : (
               <>
-                <Link to="/login" className="btn btn-outline-light btn-sm">Login</Link>
+                <Link to="/login" className="btn btn-outline-light btn-sm me-2">Login</Link>
                 <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
               </>
             )}
@@ -76,6 +79,8 @@ export default function NavBar() {
         </div>
 
       </div>
+
     </nav>
   );
 }
+
