@@ -6,6 +6,8 @@ import Signup from './pages/Signup'
 import Profile from './pages/Profile'
 import Dashboard from './pages/Dashboard'
 import Shop from "./pages/Shop";
+import Cart from './pages/Cart'
+
 // import './App.css'
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path='/cart' element={<Cart/>}/>
         </Routes>
       </main>
     </BrowserRouter>

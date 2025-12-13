@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtService {
@@ -20,10 +22,28 @@ public class JwtService {
     private Long jwtExpirationMs;
 
     private Key getSigningKey() {
-        byte[] keyBytes = jwtSecret.getBytes();
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
+    /* ✅ NEW: Generate token with userId + email */
+    public String generateToken(Long userId, String email) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + jwtExpirationMs);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(email) // email remains subject
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    /* ❌ Optional: keep only if used elsewhere */
     public String generateToken(String subject) {
         Date now = new Date();
         Date exp = new Date(now.getTime() + jwtExpirationMs);
@@ -38,11 +58,16 @@ public class JwtService {
 
     public boolean isTokenValid(String token, String username) {
         final String subject = extractUsername(token);
-        return (subject.equals(username)) && !isTokenExpired(token);
+        return subject.equals(username) && !isTokenExpired(token);
     }
 
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
+    }
+
+    /* ✅ NEW: Extract userId */
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get("userId", Long.class);
     }
 
     private boolean isTokenExpired(String token) {
