@@ -95,4 +95,11 @@ public class UserService {
                 .map(this::registerUser)
                 .collect(Collectors.toList());
     }
+
+    public Long getUserIdByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"))
+                .getUserId();
+    }
+
 }

@@ -60,14 +60,15 @@ public class UserController {
     // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
         User user = userService.loginUser(loginRequest);
 
-        // Generate JWT
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(
+                user.getUserId(),
+                user.getEmail());
 
-        LoginResponse response = new LoginResponse("Login successful", token);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                new LoginResponse("Login successful", token));
     }
 
     // Get user by ID

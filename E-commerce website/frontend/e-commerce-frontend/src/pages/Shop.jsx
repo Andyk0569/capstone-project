@@ -14,6 +14,7 @@ export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(false);
 
+  // FETCH PRODUCTS
   const fetchProducts = async (category) => {
     setLoading(true);
     try {
@@ -36,11 +37,42 @@ export default function Shop() {
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
 
-  // TEMP ADD TO CART HANDLER
-  const handleAddToCart = (product) => {
-    console.log("Added to cart:", product);
-    alert(`${product.name} added to cart 🛒`);
-  };
+  // REAL ADD TO CART HANDLER
+  const handleAddToCart = async (product) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login to add items to cart");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:8080/api/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        productId: product.productId,
+        productName: product.name,
+        imageUrl: product.imageUrl,
+        category: product.category,
+        price: product.price,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to add to cart");
+
+    // Trigger custom event to update cart badge
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    alert("Added to cart 🛒");
+  } catch (err) {
+    console.error(err);
+    alert("Error adding to cart");
+  }
+};
 
   return (
     <div className="container py-5">
@@ -84,7 +116,7 @@ export default function Shop() {
                 <p className="text-muted">No products available</p>
               ) : (
                 products.map((product) => (
-                  <div className="col-md-4" key={product.name}>
+                  <div className="col-md-4" key={product.productId}>
                     <ProductCard
                       product={product}
                       onAddToCart={handleAddToCart}
