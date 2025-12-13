@@ -101,4 +101,12 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductResponseDTO> getProductsByCategory(String category) {
+        return productRepository.findByCategoryIgnoreCase(category)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

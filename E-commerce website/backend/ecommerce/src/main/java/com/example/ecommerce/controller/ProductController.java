@@ -52,4 +52,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.createProductsInBulk(requestList));
     }
 
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(
+            @PathVariable String category) {
+        return ResponseEntity.ok(productService.getProductsByCategory(category));
+    }
+
 }
