@@ -11,6 +11,9 @@ import com.example.ecommerce.repository.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -51,11 +54,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDTO> getAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(this::convertToDTO);
     }
 
     @Override
@@ -101,12 +102,9 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<ProductResponseDTO> getProductsByCategory(String category) {
-        return productRepository.findByCategoryIgnoreCase(category)
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDTO> getProductsByCategory(String category, Pageable pageable) {
+        return productRepository.findByCategory(category, pageable)
+                .map(this::convertToDTO);
     }
 
 }

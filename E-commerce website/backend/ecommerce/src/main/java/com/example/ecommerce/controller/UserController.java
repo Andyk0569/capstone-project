@@ -57,20 +57,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // Login endpoint
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-
-        User user = userService.loginUser(loginRequest);
-
-        String token = jwtService.generateToken(
-                user.getUserId(),
-                user.getEmail());
-
-        return ResponseEntity.ok(
-                new LoginResponse("Login successful", token));
-    }
-
     // Get user by ID
     @GetMapping("/{userId}")
     public ResponseEntity<Map<String, Object>> getUser(@PathVariable Long userId) {
@@ -92,6 +78,20 @@ public class UserController {
         response.put("createdAt", foundUser.getCreatedAt());
 
         return ResponseEntity.ok(response);
+    }
+
+    // Login endpoint
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+
+        User user = userService.loginUser(loginRequest);
+
+        String token = jwtService.generateToken(
+                user.getUserId(),
+                user.getEmail());
+
+        return ResponseEntity.ok(
+                new LoginResponse("Login successful", token));
     }
 
     // Update user
