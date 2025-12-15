@@ -3,7 +3,7 @@ package com.example.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+// import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +16,11 @@ import com.example.ecommerce.entity.CartItem;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.UserService;
 
-import io.jsonwebtoken.Jwt;
+// import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+// import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")

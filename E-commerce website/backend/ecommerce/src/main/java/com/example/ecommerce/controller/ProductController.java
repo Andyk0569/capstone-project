@@ -1,12 +1,16 @@
 package com.example.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.ecommerce.DTO.ProductRequestDTO;
 import com.example.ecommerce.DTO.ProductResponseDTO;
 import com.example.ecommerce.service.ProductService;
+
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -28,8 +32,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Page<ProductResponseDTO>> getAllProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
     @PutMapping("/{id}")
@@ -53,9 +61,13 @@ public class ProductController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(
-            @PathVariable String category) {
-        return ResponseEntity.ok(productService.getProductsByCategory(category));
+    public ResponseEntity<Page<ProductResponseDTO>> getProductsByCategory(
+            @PathVariable String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(productService.getProductsByCategory(category, pageable));
     }
 
 }
