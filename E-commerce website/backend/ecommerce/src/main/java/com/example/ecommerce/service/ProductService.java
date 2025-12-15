@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.ecommerce.DTO.ProductRequestDTO;
 import com.example.ecommerce.DTO.ProductResponseDTO;
+// import com.example.ecommerce.entity.Product;
 
 public interface ProductService {
 
@@ -16,6 +17,8 @@ public interface ProductService {
     ProductResponseDTO updateProduct(Long productId, ProductRequestDTO request);
 
     List<ProductResponseDTO> createProductsInBulk(List<ProductRequestDTO> requests);
+
+    List<ProductResponseDTO> getProductsByCategory(String category);
 
     void deleteProduct(Long productId);
 }
