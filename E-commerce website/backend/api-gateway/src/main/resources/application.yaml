@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+# JWT Configuration - MUST MATCH ecommerce (user-service)
+jwt:
+  secret: u9s8Df7G6h5J4k3L2p1QwErTyUiOpAsDfGhJkLzXcVbNm1234
+  expiration-ms: 86400000
+
+# Eureka Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
