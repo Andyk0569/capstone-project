@@ -7,6 +7,8 @@ import Profile from './pages/Profile'
 import Dashboard from './pages/Dashboard'
 import Shop from "./pages/Shop";
 import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
+import OrderHistory from './pages/OrderHistory'
 
 // import './App.css'
 
@@ -23,6 +25,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/shop" element={<Shop />} />
           <Route path='/cart' element={<Cart/>}/>
+          <Route path='/checkout' element={<Checkout/>}/>
+          <Route path="/orders" element={<OrderHistory />} />
         </Routes>
       </main>
     </BrowserRouter>
