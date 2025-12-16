@@ -32,7 +32,7 @@ export default function Cart() {
   useEffect(() => {
     fetchCartItems();
 
-    // Listen for updates (when user adds new product to cart)
+    // Refresh cart when items are added/removed
     const handler = () => fetchCartItems();
     window.addEventListener("cartUpdated", handler);
 
@@ -50,9 +50,21 @@ export default function Cart() {
       ) : cartItems.length === 0 ? (
         <p className="text-muted">Your cart is empty</p>
       ) : (
-        cartItems.map((item) => (
-          <CartItemCard key={item.productId} item={item} />
-        ))
+        <>
+          {cartItems.map((item) => (
+            <CartItemCard key={item.productId} item={item} />
+          ))}
+
+          {/* Checkout Button */}
+          <div className="d-flex justify-content-end mt-4">
+            <button
+              className="btn btn-success px-4"
+              onClick={() => (window.location.href = "/checkout")}
+            >
+              Proceed to Checkout
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

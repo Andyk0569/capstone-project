@@ -22,7 +22,7 @@ public class GatewayConfig {
 
                                 // Cart Service - ALL cart endpoints require JWT
                                 .route("cart_protected", r -> r
-                                                .path("/api/cart/**")
+                                                .path("/api/cart/**", "/api/orders/**")
                                                 .filters(f -> f.filter(jwtAuthenticationFilter))
                                                 .uri("http://localhost:8083")) // order-service
 
